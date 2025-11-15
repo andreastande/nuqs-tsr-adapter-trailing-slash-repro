@@ -1,8 +1,7 @@
-import { createFileRoute, Link, useLocation } from "@tanstack/react-router"
-import { ArrowLeft, CheckIcon, XIcon } from "lucide-react"
+import { createFileRoute, useLocation } from "@tanstack/react-router"
+import { CheckIcon, XIcon } from "lucide-react"
 import { createStandardSchemaV1, parseAsInteger, useQueryState } from "nuqs"
 import RefreshKBD from "@/components/refresh-kbd"
-import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const tabParser = parseAsInteger.withDefault(1)
@@ -26,12 +25,6 @@ function App() {
 
   return (
     <>
-      <Link to="/" className="absolute top-8 left-8">
-        <Button size="icon-lg" variant="outline" className="cursor-pointer">
-          <ArrowLeft />
-        </Button>
-      </Link>
-
       {!isCorrectHref() && (
         <div className="-translate-x-1/2 absolute bottom-12 left-1/2 space-y-1 text-center *:text-sm">
           <p className="flex items-center">
