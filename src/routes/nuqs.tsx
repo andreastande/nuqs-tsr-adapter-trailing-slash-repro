@@ -19,12 +19,14 @@ export const Route = createFileRoute("/nuqs")({
 function App() {
   const { href } = useLocation()
   const [tab, setTab] = useQueryState("tab", tabParser)
-  const [stripTrailingSlash, setStripTrailingSlash] = useState<CheckedState>(false)
+  const [shouldRemoveTrailingSlash, setShouldRemoveTrailingSlash] = useState<CheckedState>(false)
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
-    if (stripTrailingSlash) removeTrailingSlash(href)
-  }, [tab, href, stripTrailingSlash])
+    if (shouldRemoveTrailingSlash) {
+      window.history.replaceState(null, "", removeTrailingSlash(href))
+    }
+  }, [tab, href, shouldRemoveTrailingSlash])
 
   function isCorrectHref() {
     const slashCount = href.split("/").length - 1
@@ -39,18 +41,18 @@ function App() {
             Refresh (<RefreshKBD />) to turn <XIcon className="text-red-600" /> into{" "}
             <CheckIcon className="text-green-600" />
           </p>
-          <p className="italic">(TR strips trailing slash)</p>
+          <p className="italic">(TR removes trailing slash)</p>
         </div>
       )}
 
       <div className="flex h-screen flex-col items-center justify-center gap-12">
         <div className="flex items-center gap-3">
           <Checkbox
-            id="stripTrailingSlash"
-            checked={stripTrailingSlash}
-            onCheckedChange={setStripTrailingSlash}
+            id="shouldRemoveTrailingSlash"
+            checked={shouldRemoveTrailingSlash}
+            onCheckedChange={setShouldRemoveTrailingSlash}
           />
-          <Label htmlFor="stripTrailingSlash">Strip trailing slash</Label>
+          <Label htmlFor="shouldRemoveTrailingSlash">Remove trailing slash</Label>
         </div>
 
         <Tabs

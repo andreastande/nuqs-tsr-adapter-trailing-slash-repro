@@ -10,5 +10,5 @@ export function removeTrailingSlash(href: string) {
   const normalizedPath = path.replace(/\/+$/, "") || "/"
   const normalizedHref = query ? `${normalizedPath}?${query}` : normalizedPath
 
-  window.history.replaceState(null, "", normalizedHref)
+  return normalizedHref
 }

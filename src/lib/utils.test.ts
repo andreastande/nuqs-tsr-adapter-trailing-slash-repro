@@ -1,15 +1,5 @@
-import { afterEach, describe, expect, it, vi } from "vitest"
+import { describe, expect, it } from "vitest"
 import { removeTrailingSlash } from "./utils"
-
-function createHistorySpy() {
-  const spy = vi.spyOn(window.history, "replaceState")
-  spy.mockClear()
-  return spy
-}
-
-afterEach(() => {
-  vi.restoreAllMocks()
-})
 
 describe("removeTrailingSlash", () => {
   it.each<[string, string]>([
@@ -26,11 +16,9 @@ describe("removeTrailingSlash", () => {
     ["/#hash", "/#hash"],
     ["/#hash/", "/#hash"],
   ])('normalizes paths without query: "%s" → "%s"', (input, expected) => {
-    const spy = createHistorySpy()
+    const result = removeTrailingSlash(input)
 
-    removeTrailingSlash(input)
-
-    expect(spy).toHaveBeenCalledWith(null, "", expected)
+    expect(result).toBe(expected)
   })
 
   it.each<[string, string]>([
@@ -49,10 +37,8 @@ describe("removeTrailingSlash", () => {
     ["?tab=1#hash", "/?tab=1#hash"],
     ["/foo/?tab=1#hash", "/foo?tab=1#hash"],
   ])('normalizes paths with query: "%s" → "%s"', (input, expected) => {
-    const spy = createHistorySpy()
+    const result = removeTrailingSlash(input)
 
-    removeTrailingSlash(input)
-
-    expect(spy).toHaveBeenCalledWith(null, "", expected)
+    expect(result).toBe(expected)
   })
 })
